@@ -1,3 +1,4 @@
 10 REM Programme Hello World sur ZX SPECTRUM NEXT
 20 CLS
 30 PRINT "Hello world"
+40 pause 0

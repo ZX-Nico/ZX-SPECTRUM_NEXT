@@ -1,0 +1,5 @@
+10 REM test avec un CLS
+20 REM dimanche 20 novembre 2022
+30 REM ============================
+40 CLS
+50 PAUSE 0

@@ -1,0 +1,89 @@
+#program pacman
+   1 REM PACMAN
+   2 REM 
+   3 REM _______________________
+  10 LOAD "pacman.spr" BANK 16,0,1536
+  20 SPRITE BANK 16
+  30 SPRITE CLEAR : SPRITE PRINT 1: SPRITE BORDER 1
+  99 REM -----------------------
+ 100 REM Initialise variables
+ 101 REM _______________________
+ 110 LET x=152: LET y=104: LET z=0: LET d= BIN 00000001
+ 120 DIM g(4): DIM h(4): LET gz=4
+ 130 LET g(1)=50: LET h(1)=50
+ 140 LET g(2)=180: LET h(2)=120
+ 150 LET g(3)=80: LET h(3)=180
+ 160 LET g(4)=40: LET h(4)=150
+ 170 IF % IN 12347 & BIN 00000001 THEN GO TO 180
+ 499 REM -----------------------
+ 500 REM Set up maze
+ 501 REM _______________________
+ 510 BORDER 1: PAPER 0: INK 7: CLS 
+ 520 FOR i=5 TO 15: PRINT AT i,25; PAPER 1;" ": NEXT i
+ 999 REM -----------------------
+1000 REM Main loop
+1001 REM _______________________
+1009 REM -----------------------
+1010 REM Display sprites
+1011 REM _______________________
+1020 SPRITE 0,x,y,z,d
+1030 FOR i=1 TO 4: SPRITE i,g(i),h(i),gz,1: NEXT i
+1200 LET x1= INT (x/8)-4: LET y1= INT (y/8)-4
+2999 REM -----------------------
+3000 REM Consequences
+3001 REM _______________________
+3010 IF % IN 12347 & 1 THEN GO TO 9010
+4999 REM -----------------------
+5000 REM Movements
+5001 REM _______________________
+5010 IF INKEY$ ="q" THEN GO SUB 7010
+5020 IF INKEY$ ="a" THEN GO SUB 7110
+5030 IF INKEY$ ="o" THEN GO SUB 7210
+5040 IF INKEY$ ="p" THEN GO SUB 7310
+5100 REM Ghost movement
+5110 LET gz=gz+1: IF gz=6 THEN LET gz=4
+5120 FOR i=1 TO 4
+5130 LET g(i)=g(i)+2
+5140 IF g(i)>303 THEN LET g(i)=0
+5150 NEXT i
+6000 GO TO 1010
+6999 REM -----------------------
+7000 REM Move up
+7001 REM _______________________
+7010 LET y=y-1
+7020 LET d= BIN 00000111
+7030 LET z=z+1: IF z=4 THEN LET z=0
+7040 RETURN 
+7099 REM -----------------------
+7100 REM Move down
+7101 REM _______________________
+7110 LET y=y+1
+7120 LET d= BIN 00000011
+7130 LET z=z+1: IF z=4 THEN LET z=0
+7140 RETURN 
+7199 REM -----------------------
+7200 REM Move left
+7201 REM _______________________
+7210 LET x=x-1
+7220 LET d= BIN 00001001
+7230 LET z=z+1: IF z=4 THEN LET z=0
+7240 RETURN 
+7299 REM -----------------------
+7300 REM Move right
+7301 REM _______________________
+7310 IF ATTR (y1,x1+2)=15 THEN RETURN 
+7315 LET x=x+1
+7320 LET d= BIN 00000001
+7330 LET z=z+1: IF z=4 THEN LET z=0
+7340 RETURN 
+9000 REM Player death
+9010 FOR i=1 TO 8
+9020 SPRITE 0,x,y,0, BIN 00000001
+9030 BEEP 0.3,i
+9040 SPRITE 0,x,y,0, BIN 00000011
+9050 BEEP 0.3,i
+9060 SPRITE 0,x,y,0, BIN 00001001
+9070 BEEP 0.3,i
+9080 SPRITE 0,x,y,0, BIN 00000111
+9090 BEEP 0.3,i
+9100 NEXT i

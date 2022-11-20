@@ -1,0 +1,21 @@
+10 RUN AT 4
+20 LET minX=-2.4
+30 LET maxX=2.4
+40 LET minY=-1.5
+50 LET maxY=1.5
+100 FOR x=0 TO 255
+110 FOR y=0 TO 191
+120 LET rc=minX+(maxX-minX)/256*x
+130 LET ic=minY+(maxY-minY)/192*y
+140 LET rz=0
+150 LET iz=0
+160 FOR a=0 TO 15
+170 LET r=rz
+180 LET i=iz
+190 LET rz=r*r-i*i+rc
+200 LET iz=2*r*i+ic
+210 IF (rz*rz+iz*iz) >= 4 THEN GO TO 230
+220 NEXT a
+230 PLOT y,x
+240 NEXT y
+250 NEXT x

@@ -1,0 +1,106 @@
+  10 RUN AT 3
+1000 REM
+1001 REM   Programme principal
+1002 REM ----------------------
+1010 PROC init()
+1020 PROC tableau()
+1030 PROC choixposition()
+1040 PROC choixcote()
+1050 LET %i= INT (t(y,x))
+1060 IF %i& BIN 00001111= BIN 00001111 THEN LET t(y,x)=t(y,x)+ BIN 00010000: LET scorejoueur=scorejoueur+1
+1900 GO TO 1020
+1990 PAUSE 0:STOP
+2000 REM 
+2001 REM     Initialisation
+2002 REM ----------------------
+2010 DEFPROC init()
+2020 BORDER 0: PAPER 7: INK 0: CLS
+2025 REM variables
+2030 LET COL=20: REM max 30
+2040 LET LIG=10: REM max 20
+2050 DIM t(LIG,COL)
+2060 FOR i=1 TO COL: LET t(1,i)= t(1,i)+ BIN 0001: LET t(LIG,i)= t(LIG,i)+ BIN 0100: NEXT i
+2070 FOR i=1 TO LIG: LET t(i,1)=t(i,1)+ BIN 1000: LET t(i,COL)=t(i,COL)+ BIN 0010: NEXT i
+2080 LET scorejoueur=0: LET scoreordi=0
+2090 LET x=1: LET y=1: REM position initiale
+2100 REM affichage score
+2110 PRINT AT 20,3; PAPER 2; BRIGHT 1;" "
+2120 PRINT AT 20,5;"0.00 %"
+2130 PRINT AT 20,13; PAPER 1; BRIGHT 1;" "
+2140 PRINT AT 20,15;"0.00 %"
+2200 REM affichage tableau
+2210 PLOT 8,167
+2220 DRAW COL*8,0
+2230 DRAW 0,-LIG*8
+2240 DRAW -COL*8,0
+2250 DRAW 0,LIG*8
+2260 FOR i=1 TO COL
+2270 FOR j=1 TO LIG
+2280 poke 22528+i+j*32,BIN 01111000
+2290 NEXT j: NEXT i
+2980 REM
+2990 ENDPROC : REM init()
+3000 REM
+3010 REM  Affichages
+3020 REM ----------------------
+3030 DEFPROC joueur(ligne,colonne)
+3040 POKE 22528+colonne+ligne*32, BIN 00010000
+3050 ENDPROC
+3100 DEFPROC ordi(ligne,colonne)
+3110 POKE 22528+colonne+ligne*32, BIN 00001000
+3120 ENDPROC
+3200 DEFPROC efface(ligne,colonne)
+3210 POKE 22528+colonne+ligne*32, BIN 01111000
+3220 ENDPROC
+3230 DEFPROC tableau()
+3240 PLOT 8,167
+3250 DRAW COL*8,0
+3260 DRAW 0,-LIG*8
+3270 DRAW -COL*8,0
+3280 DRAW 0,LIG*8
+3290 FOR i=1 TO COL
+3300 FOR j=1 TO LIG
+3310 POKE 22528+i+j*32, BIN 01111000
+3315 IF t(j,i)= BIN 1111 THEN POKE 22528+i+j*32, BIN 01010000
+3320 NEXT j: NEXT i
+3330 ENDPROC
+4000 REM
+4010 REM     Choix du joueur
+4020 REM ----------------------
+4030 DEFPROC choixposition()
+4200 LET a$= INKEY$
+4210 IF (a$="q" OR a$="Q") and y>1 THEN PROC efface(y,x):LET y=y-1:PROC joueur(y,x)
+4220 IF (a$="a" OR a$="A") and y<LIG THEN PROC efface(y,x):LET y=y+1:PROC joueur(y,x)
+4230 IF (a$="o" OR a$="O") and x>1 THEN PROC efface(y,x):LET x=x-1:PROC joueur(y,x)
+4240 IF (a$="p" OR a$="P") and x<COL THEN PROC efface(y,x):LET x=x+1:PROC joueur(y,x)
+4250 IF a$=" " THEN ENDPROC
+4260 GO TO 4200
+4270 ENDPROC
+4300 DEFPROC choixcote()
+4310 LET a$= INKEY$
+4320 IF a$="1" THEN GO TO 4400
+4330 IF a$="3" THEN GO TO 4430
+4340 IF a$="2" THEN GO TO 4470
+4350 IF a$="4" THEN GO TO 4510
+4360 GO TO 4310
+4400 let %i=int(t(y,x))
+4405 IF %i & BIN 00000001 = BIN 00000001 THEN GO TO 4310
+4410 LET t(y,x)=t(y,x)+ BIN 0001: PLOT 8*x,175-8*y: DRAW 7,0
+4415 if y>1 then let t(y-1,x)=t(y-1,x)+BIN 0100
+4420 ENDPROC
+4430 LET %i= INT (t(y,x))
+4440 IF %i & BIN 00000100 = BIN 00000100 THEN GO TO 4310
+4450 LET t(y,x)=t(y,x)+ BIN 0100: PLOT 8*x,167-8*y: DRAW 7,0
+4455 if y<LIG then let t(y+1,x)=t(y+1,x)+BIN 0001
+4460 ENDPROC
+4470 LET %i= INT (t(y,x))
+4480 IF %i & BIN 00000010 = BIN 00000010 THEN GO TO 4310
+4490 LET t(y,x)=t(y,x)+ BIN 0010: PLOT 8*x+8,175-8*y: DRAW 0,-7
+4495 if x<COL then let t(y,x+1)=t(y,x+1)+BIN 1000
+4500 ENDPROC
+4510 LET %i= INT (t(y,x))
+4520 IF %i& BIN 00001000 = BIN 00001000 THEN GO TO 4310
+4530 LET t(y,x)=t(y,x)+ BIN 1000: PLOT 8*x,175-8*y: DRAW 0,-7
+4535 if x>1 then let t(y,x-1)=t(y,x-1)+BIN 0010
+4540 ENDPROC 
+

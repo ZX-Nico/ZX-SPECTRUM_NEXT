@@ -1,0 +1,12 @@
+#program factorie
+   5 CLS 
+  10 INPUT "Donnez un nombre";x
+  20 IF x>33 THEN PRINT "Le Next ne peut calculer ce factoriel": GO TO 999
+  30 PROC factoriel(x) TO f
+  40 IF f>0 THEN PRINT x;"!=";f: ELSE GO TO 999 
+ 999 PAUSE 0:GOTO 9999 
+1000 DEFPROC factoriel(n)
+1010     IF n<0 OR n<> INT n THEN PRINT "Le Next ne peut calculer qu'un factoriel de 0 ou d'un nombre positif": ENDPROC =-1: ELSE IF (n=0 OR n=1) THEN ENDPROC =1
+1020     LOCAL partiel
+1030     PROC factoriel(n-1) TO partiel
+1040 ENDPROC =n*partiel

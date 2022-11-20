@@ -1,0 +1,57 @@
+1 REM ZX Spectrum NEXT
+2 REM affiche 2 messages
+3 REM avec un bandeau
+4 REM 
+7 REM Nicolas Prego
+8 REM Samedi 17 octobre 2020
+9 REM -----------------------
+10 REM initialisation
+15 RUN AT 1
+17 GO SUB 9000 : REM caractere graphique
+20 LET hauteur=4
+30 LET a$="Sinclair ZX Spectrum"
+35 LET longA=len(a$)
+40 LET b$="Hello, World !"
+50 let longB=len(b$)
+100 REM preparation de l'ecran
+110 BORDER 0: PAPER 0: INK 7:CLS
+200 REM affichage bandeau
+210 RESTORE 220
+220 DATA 0,5,4,6,2,0
+230 READ encre,papier
+310 for j=0 TO 4 
+320 FOR i=0 TO (hauteur+j)
+330 PRINT AT 21-i,31-(hauteur+j)+i; INK encre; PAPER papier; CHR$ (144)
+340 NEXT i
+350 LET encre=papier
+360 READ papier
+370 NEXT j
+400 REM affichage message
+410 INK 7
+420 PRINT AT 21-hauteur,17- INT (longA/2);a$
+430 c$=b$+b$
+440 i=1
+450 PRINT AT 21- INT (hauteur/2),17- INT (longB/2);c$(i TO longB)
+500 RESTORE 550: FOR %i=1 TO 8
+510 READ bordure
+520 BORDER bordure
+530 NEXT %i
+540 GO TO 500
+550 DATA 5,0,4,0,6,0,2,0 
+1000 PAUSE 0: GOTO 9999
+9000 REM definition caractere graphique
+9010 RESTORE 9200
+9020 FOR i=0 TO 7
+9030 READ valeur
+9040 POKE USR "a"+i,valeur
+9050 NEXT i
+9100 RETURN
+9200 DATA BIN 00000001
+9210 DATA BIN 00000011
+9220 DATA BIN 00000111
+9230 DATA BIN 00001111
+9240 DATA BIN 00011111
+9250 DATA BIN 00111111
+9260 DATA BIN 01111111
+9270 DATA BIN 11111111
+

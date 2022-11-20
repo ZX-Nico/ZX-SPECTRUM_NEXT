@@ -1,0 +1,21 @@
+10 REM ORDINATEUR INDIVIDUEL
+20 REM NUMERO 60 - PAGE 214
+30 REM ------------------------
+100 FOR i=1 TO 9
+110 READ a$,c: PRINT a$
+120 PLOT 128,13
+130 DRAW 0,150,c
+140 PAUSE 0: CLS
+150 NEXT i
+160 REM
+170 REM -----------------------
+180 REM
+190 DATA "Hexagone",260
+191 DATA "Carre",405
+192 DATA "Carre",436
+193 DATA "Triangle",481
+194 DATA "Soleil",801
+195 DATA "Herisson",808
+196 DATA "Scie",813
+197 DATA "Etoile",951
+198 DATA "Polygone",3000

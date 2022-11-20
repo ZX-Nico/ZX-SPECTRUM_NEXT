@@ -1,0 +1,19 @@
+   1 REM 15 inventions a
+   2 REM 3 voix de Bach
+   3 REM
+   4 REM ------------------------------
+  10 REM Premiere mesure
+  11 LET a$="T96O5V0N1GV15N1g1a1b1C1D1E1F1G1F1G1A1F1A1G1F"
+  12 LET b$="O4V15N5cV0N3gV15N3C3b3g3a3b"
+  13 LET c$=""
+  14 PLAY a$,b$,c$
+  15 REM Deuxieme mesure
+  16 LET a$="O5V0N1gV3N1c1d1eV7N1f1g1a1bV11N1C1b1C1DV15N1C1E1D1C"
+  17 LET b$="O4N5CV0N3gV15N3b3a3g3a3d"
+  18 LET c$="O5N8EV0N3gV15N5#F"
+  19 PLAY a$,b$,c$
+  20 REM Troisieme mesure
+  21 LET a$="O5N3B3D_3D3C_5C5C"
+  22 LET b$="O3N1gO4N1g1a1b1C1D1E1F1G1F1G1A1F1A1G1F"
+  23 LET c$="O5N3G3#F5E3D1E1F5D"
+  24 PLAY a$,b$,c$

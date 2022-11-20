@@ -1,0 +1,28 @@
+1 REM Rotation dans l'espace
+2 REM ORDI-5 Numero 12 mai 85
+3 REM page 18
+4 REM ecrit par G.Clement
+5 REM adapte par N. Prego
+6 REM le 5 fevrier 2021
+7 REM -----------------------
+8 RUN AT 3
+10 LET r=80: LET s=90: LET h=1
+20 LET k=0: DIM m(1,105): DIM n(1,105)
+30 FOR a=0 TO 10* PI /3 STEP .1
+40 LET k=k+1
+50 LET m=70+50* COS a: LET n= SQR (60*60*(1- COS a* COS a))
+60 IF a >= PI THEN LET n=-n
+70 LET m(1,k)=m: LET n(1,k)=n
+100 NEXT a
+110 FOR i=42 TO 63: LET j=i-20: LET l=i-41: LET x=m(1,j)-m(1,i): LET y=n(1,j)-n(1,i)
+112 LET z=m(1,l)-m(1,j): LET t=n(1,l)-n(1,j)
+114 LET u=m(1,i)-m(1,l): LET v=n(1,i)-n(1,l)
+120 CLS : PLOT r,s: DRAW m(1,i),n(1,i)
+125 DRAW x,y
+130 PLOT r,s: DRAW m(1,j),n(1,j)
+135 DRAW z,t
+140 PLOT r,s: DRAW m(1,l),n(1,l)
+145 DRAW u,v
+146 GO SUB 150: PAUSE h: NEXT i
+150 IF INKEY$ ="" THEN PAUSE h: NEXT i: GO TO 110
+160 LET h=2* VAL INKEY$ : RETURN

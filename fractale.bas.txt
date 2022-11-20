@@ -1,0 +1,22 @@
+10 REM Programme fractale
+20 RUN AT 3
+50 FOR i=1 TO 4
+60 CLS
+100 plot 50,100
+110 PROC fract(i,0, PI /3,100)
+115 PROC fract(i,- PI /2- PI /6, PI /3,100)
+117 PROC fract(i,- PI - PI /3, PI /3,100)
+118 NEXT i
+120 GO TO 20
+1010 DEFPROC fract(n,a,t,l)
+1020 IF n=1 THEN GO SUB 1100: ENDPROC
+1030 PROC fract(n-1,a,t,l/3)
+1040 PROC fract(n-1,a+t,t,l/3)
+1050 PROC fract(n-1,a-t,t,l/3)
+1060 PROC fract(n-1,a,t,l/3)
+1070 ENDPROC 
+1100 DRAW l/3* COS (a),l/3* SIN (a)
+1110 DRAW l/6* COS (a+t)/cos(t),l/6* SIN (a+t)/cos(t)
+1120 DRAW l/6* COS (-a+t)/cos(t),-l/6* SIN (-a+t)/cos(t)
+1130 DRAW l/3* COS (a),l/3* SIN (a)
+1200 RETURN

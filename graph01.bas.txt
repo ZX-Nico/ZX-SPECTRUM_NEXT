@@ -1,0 +1,31 @@
+1 REM Les familles de courbes
+2 REM Livre La pratique du
+3 REM ZX Spectrum Volume 1
+4 REM Chapitre 3 - Page 47
+5 REM adapte par N. Prego
+6 REM le 1er novembre 2020
+7 REM -----------------------
+10 REM axes
+15 BORDER 7: PAPER 7: INK 0: CLS
+17 run at 3
+20 PLOT 0,0: DRAW 255,0
+30 PLOT 0,0: DRAW 0,175
+40 REM
+100 REM lineaire
+110 PLOT 0,0: DRAW 250,175/255*250
+200 REM exponentiel
+205 LET y=1
+210 FOR i=1 TO 119 STEP .1
+220 LET y=y*1.004315233
+230 PLOT i,y
+240 NEXT i
+300 REM logarithmique
+310 FOR i=1 TO 255 STEP .1
+320 PLOT i,log(i*15)
+330 NEXT i
+400 REM puissance
+410 FOR i=1 TO 200 STEP .1
+420 PLOT i,i*i/145
+430 NEXT i
+440 PAUSE 0
+

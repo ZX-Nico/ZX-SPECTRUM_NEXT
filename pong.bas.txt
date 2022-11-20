@@ -1,0 +1,27 @@
+10 REM initialisation
+100 CLS
+110 BORDER 0:INK 0:PAPER 7
+1000 REM variables
+1010 LET scoreA=0
+1020 LET scoreB=0
+1030 LET positionA=5
+1040 LET positionB=10
+1050 LET taille=5
+2000 REM affichages
+2010 REM affichages des scores
+2020 PRINT AT 0,10;scoreA;
+2030 PRINT AT 0,22;scoreB;
+2100 REM affichages des raquettes
+2110 FOR i=0 to taille-1
+2120 PRINT AT positionA+i,1;chr$(143)
+2130 PRINT AT positionB+i,30;chr$(143)
+2140 NEXT i
+3000 REM Mouvement des raquettes
+3010 LET k$=INKEY$
+3020 IF k$="" THEN GOTO 3010
+3030 IF k$="p" OR k$="P" THEN GOTO 3100
+3090 GOTO 3010
+3100 REM raquettes vers le haut
+3110 IF positionA>0 THEN LET positionA=positionA-1
+3120 GOTO 1000
+9999 GOTO 3010

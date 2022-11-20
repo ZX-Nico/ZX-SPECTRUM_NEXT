@@ -1,0 +1,4 @@
+10 REM Hello world
+20 CLS
+30 PRINT "Hello world"
+40 pause 0

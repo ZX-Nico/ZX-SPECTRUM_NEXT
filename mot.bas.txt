@@ -1,0 +1,10 @@
+10 REM
+20 INPUT a$
+40 LET l=LEN (a$)
+50 LET b$=a$+" "+a$
+60 FOR i=1 TO l
+70 PRINT AT 0,0;b$(i TO i+l)
+80 PAUSE 10
+90 NEXT i
+100 goto 60
+

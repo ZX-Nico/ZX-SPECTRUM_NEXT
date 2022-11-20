@@ -1,0 +1,64 @@
+10 BORDER 0:PAPER 0: INK 7
+20 CLS
+30 RUN AT 3
+1000 REM Initialisation
+1001 REM --------------
+1010 DIM n$(8,8): REM noms des equipes
+1020 DIM a(8): REM Position classement
+1030 DIM v(8):DIM n(8):REM victoire et match nul
+1040 DIM p(8):DIM c(8):REM buts pour et contre
+1050 LET jour=1
+1100 RESTORE 1200
+1110 FOR i=1 TO 8
+1120 READ n$(i)
+1130 NEXT i
+1200 DATA "LILLE","PARIS","LE HAVRE","BORDEAUX"
+1210 DATA "NANTES","NICE","LYON","REIMS"
+2000 REM Nouvelle journee
+2001 REM ----------------
+2010 DIM e(8)
+2020 DIM s(8):REM score des matchs
+2030 RESTORE 2099+jour
+2040 FOR i=1 TO 4
+2050 READ e(2*i-1),e(2*i)
+2060 NEXT i
+2100 DATA 1,2,3,4,5,6,7,8
+2101 DATA 2,7,4,1,6,3,8,5
+2102 DATA 7,4,1,6,3,8,5,2
+2200 PRINT AT 0,12;"JOURNEE :";jour
+2210 FOR i=1 TO 4
+2220 PRINT AT 2*i+2,2;n$(e(2*i-1));" 0 - 0 ";n$(e(2*i))
+2230 NEXT i
+2300 FOR t=0 TO 90
+2310 PRINT AT 2,10;"TEMPS :";t
+2320 FOR i=1 TO 4
+2330 IF INT(RND*40)=1 THEN LET s(2*i-1)=s(2*i-1)+1
+2340 IF INT(RND*50)=1 THEN LET s(2*i)=s(2*i)+1
+2380 PRINT AT 2*i+2,11;s(2*i-1);" - ";s(2*i)
+2390 NEXT i
+2400 NEXT t
+2510 FOR i=1 TO 4
+2520 IF s(2*i-1)=s(2*i) THEN LET n(e(2*i-1))=n(e(2*i-1))+1: LET n(e(2*i))=n(e(2*i))+1: GOTO 2540
+2530 IF s(2*i-1)>s(2*i) THEN LET v(e(2*i-1))=v(e(2*i-1))+1: GOTO 2540
+2535 LET v(e(2*i))=v(e(2*i))+1
+2540 LET p(e(2*i-1))=p(e(2*i-1))+s(2*i-1):LET c(e(2*i-1))=c(e(2*i-1))+s(2*i)
+2550 LET p(e(2*i))=p(e(2*i))+s(2*i):LET c(e(2*i))=c(e(2*i))+s(2*i-1)
+2560 NEXT i
+3000 REM Calcul du nouveau classement
+3001 REM ----------------------------
+3010 FOR i=1 TO 8: LET a(i)=1:NEXT i
+3020 FOR i=1 TO 8
+3030 FOR j=i+1 TO 8
+3040 IF (v(i)*3+n(i))<(v(j)*3+n(j)) THEN LET a(i)=a(i)+1: GOTO 3070
+3050 IF (v(i)*3+n(i))=(v(j)*3+n(j)) AND (p(i)-c(i))<(p(j)-c(j)) THEN LET a(i)=a(i)+1: GOTO 3070
+3060 LET a(j)=a(j)+1
+3070 NEXT j
+3080 NEXT i
+3100 FOR i=1 TO 8
+3110 FOR j=1 TO 8
+3120 IF a(j)=i THEN PRINT AT i+12,0;a(j);")";n$(j);v(j)*3+n(j);"=";v(j);" ";n(j);" ";jour-v(j)-n(j);" -- ";p(j);" ";c(j)
+3130 NEXT j
+3140 NEXT i
+3200 PAUSE 0
+3210 LET jour =jour +1
+3220 GOTO 2000

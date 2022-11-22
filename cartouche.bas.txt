@@ -1,5 +1,5 @@
-1 REM ZX Spectrum NEXT
-2 REM affiche 2 messages
+1 REM SINCLAIR ZX Spectrum NEXT
+2 REM =========================
 3 REM avec un bandeau
 4 REM 
 7 REM Nicolas Prego

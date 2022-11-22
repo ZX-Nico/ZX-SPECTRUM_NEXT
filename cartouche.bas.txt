@@ -1,10 +1,11 @@
-1 REM SINCLAIR ZX Spectrum NEXT
+1 REM SINCLAIR - ZX SPECTRUM NEXT
 2 REM =========================
-3 REM avec un bandeau
-4 REM 
-7 REM Nicolas Prego
-8 REM Samedi 17 octobre 2020
-9 REM -----------------------
+3 REM Programme "Cartouche"
+4 REM Samedi 17 octobre 2020 par N. Prego
+5 REM Langage : Basic Next
+6 REM ========================
+7 REM Ce programme affiche 2 messages avec un bandeau
+8 REM
 10 REM initialisation
 15 RUN AT 1
 17 GO SUB 9000 : REM caractere graphique

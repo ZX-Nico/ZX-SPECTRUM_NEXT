@@ -1,0 +1,20 @@
+#program connect4
+1 RUN AT 3
+5 BORDER 2
+10 LOAD "connect4.spr" BANK 16,0,1280
+20 SPRITE BANK 16
+30 LET b=2
+40 DIM S(b):DIM x(b):DIM y(b):DIM v(b):DIM w(b)
+50 SPRITE CLEAR : SPRITE PRINT 1
+60 FOR i=1 TO b
+70 LET x(i)=INT(RND*200)+32:LET v(i)=0.5+RND/2
+80 LET y(i)=INT(RND*150)+32:LET w(i)=0.5+RND/2
+90 NEXT i
+100 LET i=1
+120 SPRITE i,x(i),y(i),1,1
+130 LET x(i)=x(i)+v(i)
+140 LET y(i)=y(i)+w(i)
+150 IF x(i)<32 OR x(i)>(256+16) THEN v(i)=-v(i)
+160 IF y(i)<32 OR y(i)>(192+16) THEN w(i)=-w(i)
+170 LET i=i+1
+180 IF i=b+1 then goto 100 : ELSE GOTO 120

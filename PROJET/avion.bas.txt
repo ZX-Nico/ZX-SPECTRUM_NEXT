@@ -1,0 +1,23 @@
+1 ; avion sur terrain
+2 ; 24 mars 2024
+3 ; Nicolas Prego
+4 ;
+5 ; -------------------------
+100 ; Chargement des sprites
+105 ; et tilemaps
+110 ; -----------------------
+115 LAYER 2,1:RUN AT 1
+120 BANK NEW bst
+130 TILE BANK bst
+140 LOAD "tilesprite.spr" BANK bst,0,28*256
+160 BANK NEW btm
+170 TILE DIM btm,0,16,16
+180 LOAD "tile.map" BANK btm,0,16*36
+200 LET y=24
+1010 TILE 16,12 AT 0,y TO 0,0
+1020 LET y=y-1
+1030 IF y=0 THEN GOTO 2000
+1040 GOTO 1010
+
+
+

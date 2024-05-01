@@ -3,21 +3,33 @@
 3 ; Nicolas Prego
 4 ;
 5 ; -------------------------
+10 LAYER 2,1
+20 RUN AT 1
+30 BORDER 0
+90 CLS
 100 ; Chargement des sprites
 105 ; et tilemaps
 110 ; -----------------------
-115 LAYER 2,1:RUN AT 1
 120 BANK NEW bst
 130 TILE BANK bst
-140 LOAD "tilesprite.spr" BANK bst,0,28*256
+140 LOAD "tuiles.spr" BANK bst,0,36*256
 160 BANK NEW btm
-170 TILE DIM btm,0,16,16
-180 LOAD "tile.map" BANK btm,0,16*36
-200 LET y=24
-1010 TILE 16,12 AT 0,y TO 0,0
-1020 LET y=y-1
-1030 IF y=0 THEN GOTO 2000
-1040 GOTO 1010
+170 TILE DIM btm,0,36,16
+180 LOAD "carte.map" BANK btm,0,36*36
+1000 ; Mouvement de la carte
+1005 ; ----------------------
+1010 LET x=8:LET y=6
+1100 TILE 8,6 AT x,y TO 8,6x
+1110 TILE 8,6 AT x-8,y-6 TO 0,0
+1120 TILE 8,6 AT x,y-6 TO 8,0
+1130 TILE 8,6 AT x-8,y TO 0,6
+1200 LET k$=INKEY$
+1210 IF k$="p" or k$="P" THEN LET x=x+1
+1220 IF x>27 THEN LET x=28
+
+9000 GOTO 1100
+
+
 
 
 

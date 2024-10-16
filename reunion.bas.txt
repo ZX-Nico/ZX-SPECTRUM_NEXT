@@ -1,0 +1,32 @@
+100 REM
+101 REM
+102 REM
+103 REM
+104 REM
+105 REM
+200 REM ---- Preparation ----
+210 CLEAR
+220 DEF FN C(A$) = ((((CODE (A$(1)))>47)AND((CODE (A$(1)))<58))*(CODE(A$(1))-48)+(((CODE(A$(1)))>64)AND((CODE(A$(1))<71)))*(CODE(A$(1))-55))*16+(((CODE (A$(2)))>47)AND((CODE (A$(2)))<58))*(CODE(A$(2))-48)+(((CODE(A$(2)))>64)AND((CODE(A$(2))<71)))*(CODE(A$(2))-55)
+230 DEF FN A(A$) = FN C(A$)*256+FN C(A$(3 TO 4))
+300 REM ---- Ecriture en LM ----
+310 LET O$="9C40":LET ORG = FN A(O$)
+320 READ A$
+330 IF A$="FIN" THEN GOTO 400
+340 POKE ORG, FN C(A$)
+350 LET ORG = ORG + 1
+360 GOTO 320
+400 REM ---- Verification ----
+410 LET FIN=ORG
+420 LET ORG = FN A(O$)
+430 FOR I=ORG TO FIN
+440 PRINT PEEK(I);" ";
+450 NEXT I
+500 REM ---- Programme en LM ----
+501 DATA "AF":           REM XOR A
+502 DATA "32","3C","5C": REM LD (tv_flags),A
+503 DATA "FIN"
+900 PAUSE 0
+
+
+
+

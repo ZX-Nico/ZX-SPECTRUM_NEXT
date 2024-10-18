@@ -6,24 +6,30 @@
 105 REM
 200 REM ---- Preparation ----
 210 CLEAR
-220 DEF FN C(A$) = ((((CODE (A$(1)))>47)AND((CODE (A$(1)))<58))*(CODE(A$(1))-48)+(((CODE(A$(1)))>64)AND((CODE(A$(1))<71)))*(CODE(A$(1))-55))*16+(((CODE (A$(2)))>47)AND((CODE (A$(2)))<58))*(CODE(A$(2))-48)+(((CODE(A$(2)))>64)AND((CODE(A$(2))<71)))*(CODE(A$(2))-55)
-230 DEF FN A(A$) = FN C(A$)*256+FN C(A$(3 TO 4))
+220 DEF FN D(H$) = ((((CODE (H$(1)))>47)AND((CODE (H$(1)))<58))*(CODE(H$(1))-48)+(((CODE(H$(1)))>64)AND((CODE(H$(1))<71)))*(CODE(H$(1))-55))*16+(((CODE (H$(2)))>47)AND((CODE (H$(2)))<58))*(CODE(H$(2))-48)+(((CODE(H$(2)))>64)AND((CODE(H$(2))<71)))*(CODE(H$(2))-55)
+230 DEF FN A(H$) = FN D(H$)*256+FN D(H$(3 TO 4))
 300 REM ---- Ecriture en LM ----
-310 LET O$="9C40":LET ORG = FN A(O$)
+310 LET O$="9C40"
+315 LET ADR = FN A(O$)
 320 READ A$
 330 IF A$="FIN" THEN GOTO 400
-340 POKE ORG, FN C(A$)
-350 LET ORG = ORG + 1
-360 GOTO 320
+340 REM POKE ADR, FN D(A$)
+345 REM LET ADR = ADR + 1
+350 REM GOTO 320
+360 L=LEN(A$)/2
+365 IF L=0 THEN GOTO 320
+370 POKE ADR,FN D(A$(1 TO 2))
+375 LET A$=A$(3 TO): LET ADR=ADR+1:LET L=L-1
+380 GOTO 365
 400 REM ---- Verification ----
-410 LET FIN=ORG
+410 LET FIN=ADR
 420 LET ORG = FN A(O$)
 430 FOR I=ORG TO FIN
 440 PRINT PEEK(I);" ";
 450 NEXT I
 500 REM ---- Programme en LM ----
-501 DATA "AF":           REM XOR A
-502 DATA "32","3C","5C": REM LD (tv_flags),A
+501 DATA "AF": REM XOR A
+502 DATA "323C5C": REM LD (tv_flags),A
 503 DATA "FIN"
 900 PAUSE 0
 

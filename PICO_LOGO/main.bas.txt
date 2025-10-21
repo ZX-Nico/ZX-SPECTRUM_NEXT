@@ -10,22 +10,30 @@
 100 ; === INITIALISATION  =====
 101 ;
 110 BORDER 0: PAPER 0: INK 7: CLS
-112 OPEN #5,"w>22,0,2,32,5" : ; Fenetre des commandes
-120 PLOT 0,0: DRAW 255,0:DRAW 0,175:DRAW -255,0:DRAW 0,-175 : ; Ecran tortue
-150 ; === INITIALISATION  =====
-200 ; == ENTREE COMMANDES =====
-202 LET c$=""
-204 PRINT #5, AT 0,0;">";c$;"  "
-206 LET k$=INKEY$
-210 IF k$<>"" THEN PAUSE 1: GOTO 214
-212 GOTO 204
-214 IF k$=CHR$(13) THEN GOTO 230
-216 IF k$=CHR$(8) AND LEN(c$)>0 THEN LET c$=c$(TO (LEN(c$)-1)): GOTO 204
-218 LET c$=c$+k$
-220 GOTO 204
-230 PRINT #5,AT 0,0;">";c$
-232 PAUSE 0
+112 CLEAR : RESTORE
+114 LET nmc=1: DIM M$(nmc,2):DIM M(nmc)
+116 FOR i=1 TO nmc:READ M$(i),M(i):NEXT i
+120 OPEN #5,"w>22,0,2,32,5" : ; Fenetre des commandes
+130 LET hauteur = 176: LET largeur = 256
+132 PLOT 0,0: DRAW largeur-1,0:DRAW 0,hauteur-1:DRAW -(largeur-1),0:DRAW 0,-(hauteur-1) : ; Ecran tortue
+150 ; == ENTREE COMMANDES =====
+151 ;
+152 LET c$="":LET l$="":; c$ sera la commande, l$ le dernier caractere entre
+154 PRINT #5, AT 0,0;">";c$;" "
+156 LET k$=INKEY$
+158 IF k$<>"" THEN PAUSE 1: GOTO 162 
+160 GOTO 156
+162 IF k$=CHR$(13) THEN GOTO 172
+164 IF k$=CHR$(8) AND LEN(c$)>0 THEN LET c$=c$(TO (LEN(c$)-1)): GOTO 154
+166 IF k$=l$ THEN PAUSE 1: LET l$="":GOTO 156
+168 LET c$=c$+k$:LET l$=k$
+170 GOTO 154
+172 PRINT #5,AT 0,0;">"; INK 5;c$
+174 PAUSE 0
+180 ; ==== INTERPRETATION =====
+
 400 ; == AVANCE ==
+402 DATA "AV",400
 450 ; == RECULE ==
 500 ; == DROITE/GAUCHE ==
 550 ; == ENCRE ==
@@ -36,5 +44,4 @@
 800 ; == VIDE ECRAN ==
 850 ; == CENTRE ==
 900 ; == ORIGINE ==
-
- 
+999 CLOSE #5

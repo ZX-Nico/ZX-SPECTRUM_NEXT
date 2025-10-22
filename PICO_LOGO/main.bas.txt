@@ -7,37 +7,44 @@
 106 ; *************************
 107 ; UNIQUEMENT SUR NEXT 2.08
 108 ;
-100 ; === INITIALISATION  =====
-101 ;
-110 BORDER 0: PAPER 0: INK 7: CLS
-112 CLEAR : RESTORE
-114 LET nmc=1: DIM M$(nmc,2):DIM M(nmc)
-116 FOR i=1 TO nmc:READ M$(i),M(i):NEXT i
+110 ; === INITIALISATION  =====
+111 ;
+112 BORDER 0: PAPER 0: INK 7: CLS
+114 CLEAR : RESTORE
+116 LET nmc=1: DIM M$(nmc,2):DIM M(nmc)
+118 FOR i=1 TO nmc:READ M$(i),M(i):NEXT i
 120 OPEN #5,"w>22,0,2,32,5" : ; Fenetre des commandes
 130 LET hauteur = 176: LET largeur = 256
 132 PLOT 0,0: DRAW largeur-1,0:DRAW 0,hauteur-1:DRAW -(largeur-1),0:DRAW 0,-(hauteur-1) : ; Ecran tortue
 150 ; == ENTREE COMMANDES =====
 151 ;
-152 LET c$="":LET l$="":; c$ sera la commande, l$ le dernier caractere entre
+152 LET c$="":LET l$="":; c$ sera la commande
 154 PRINT #5, AT 0,0;">";c$;" "
 156 LET k$=INKEY$
 158 IF k$<>"" THEN PAUSE 1: GOTO 162 
 160 GOTO 156
-1
- 
-
-62 IF k$=CHR$(13) THEN GOTO 172
+162 IF k$=CHR$(13) THEN GOTO 172
 164 IF k$=CHR$(8) AND LEN(c$)>0 THEN LET c$=c$(TO (LEN(c$)-1)): GOTO 154
 166 IF k$=l$ THEN PAUSE 1: LET l$="":GOTO 156
 168 LET c$=c$+k$:LET l$=k$
 170 GOTO 154
 172 FOR i=1 TO LEN(c$)
 173 LET j=CODE(c$(i))
-174 IF j>96 AND j<123 THEN LET c$(i)=CHR$(j-32)
+174 IF j>96 AND j<123 THEN LET c$(i)=CHR$(j-32):; UPPER$
 175 NEXT i
 176 PRINT #5,AT 0,0;">"; INK 5;c$
 178 PAUSE 0
 180 ; ==== INTERPRETATION =====
+182 LET nc=0
+184 FOR i=1 TO LEN (c$)-1
+186 LET k$=c$(i TO i+1)
+188 FOR j=1 TO nmc
+190 IF k$=m$(j) THEN GOSUB 200
+192 NEXT j
+194 NEXT i
+200 LET nc=nc+1
+202 LET i$(nc)=m$(j)
+204 RETURN
 400 ; == AVANCE ==
 402 DATA "AV",400
 450 ; == RECULE ==

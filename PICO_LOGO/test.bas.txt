@@ -1,0 +1,12 @@
+100 LET c$="avance 90 recule 30"
+110 ; mettre en majuscules ----
+112 FOR i=1 TO LEN(c$)
+114 LET j=CODE(c$(i))
+116 IF j>96 AND j<123 THEN LET c$(i)=CHR$(j-32)
+118 NEXT i
+210 ; lecture des commandes ---
+220 LET compteur=0
+222 LET k$=""
+
+900 PRINT "Programme termine"
+910 PAUSE

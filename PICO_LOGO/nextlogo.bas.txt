@@ -1,0 +1,23 @@
+100 ; initialisation
+101 ; --------------
+110 LET xtortue=0:LET ytortue=0
+115 LET angtortue=90
+120 LET montretortue=1
+125 LET taille=5:LET cote=SQR(2*taille*taille)
+200 ; axe des x
+210 PLOT 0,80:DRAW 255,0
+220 DRAW -3,3:DRAW 0,-6:DRAW 3,3
+230 ; axe des y
+240 PLOT 128,0:DRAW 0,175
+250 DRAW -3,-3:DRAW 6,0:DRAW -3,3
+260 GOSUB 900:GOTO 990
+900 ; affiche la tortue
+901 ; -----------------
+910 LET x=xtortue+128
+911 LET y=ytortue+80
+915 PLOT x,y
+920 IF montretortue=0 THEN RETURN
+930 DRAW taille*COS(angtortue*PI/180),taille*SIN(angtortue*PI/180)
+930 DRAW cote*COS(angtortue*PI/180-PI),cote*SIN(angtortue*PI/180-PI)
+980 RETURN 
+990 PAUSE 0:STOP

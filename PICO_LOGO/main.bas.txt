@@ -13,13 +13,13 @@
 114 CLEAR : RESTORE
 116 LET nmc=1: DIM M$(nmc,2):DIM M(nmc)
 118 FOR i=1 TO nmc:READ M$(i),M(i):NEXT i
-120 OPEN #5,"w>22,0,2,32,5" : ; Fenetre des commandes
+120 OPEN #5,"w>22,0,2,32" : ; Fenetre des commandes
 130 LET hauteur = 176: LET largeur = 256
 132 PLOT 0,0: DRAW largeur-1,0:DRAW 0,hauteur-1:DRAW -(largeur-1),0:DRAW 0,-(hauteur-1) : ; Ecran tortue
 150 ; == ENTREE COMMANDES =====
 151 ;
 152 LET c$="":LET l$="":; c$ sera la commande
-154 PRINT #5, AT 0,0;">";c$;" "
+154 PRINT #5, AT 0,0;">";c$;FLASH 1;" ";FLASH 0;" "
 156 LET k$=INKEY$
 158 IF k$<>"" THEN PAUSE 1: GOTO 162 
 160 GOTO 156

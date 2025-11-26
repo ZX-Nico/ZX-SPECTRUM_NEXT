@@ -1,4 +1,4 @@
-  10 ; Sprite: Romylos Dokos © 2019
+  10 ; Sprite: Romylos Dokos ï¿½ 2019
   20 SPRITE CLEAR
   30 RESTORE
   40 BANK NEW a

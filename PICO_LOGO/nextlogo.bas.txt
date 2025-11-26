@@ -1,9 +1,14 @@
 100 ; initialisation
 101 ; --------------
-110 LET xtortue=20:LET ytortue=20
-115 LET angtortue=20
+110 LET xtortue=0:LET ytortue=0
+115 LET angtortue=0
 120 LET montretortue=1
 125 LET taille=5
+140 DIM l$(9,20):; lignes de l'editeur 
+145 LET c$="":; commande en cours
+150 LET a$="":; argument en cours
+160 LET np=1
+165 DIM p$(np,2):; liste des primitives
 200 ; axe des x
 210 PLOT 0,80:DRAW 255,0
 220 DRAW -3,3:DRAW 0,-6:DRAW 3,3

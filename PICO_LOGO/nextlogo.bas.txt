@@ -1,6 +1,6 @@
 100 ; initialisation
 101 ; --------------
-110 LET xtortue=0:LET ytortue=0
+110 LET xtortue=20:LET ytortue=20
 115 LET angtortue=0
 120 LET montretortue=1
 125 LET taille=5
@@ -20,19 +20,21 @@
 901 ; -----------------
 910 LET x=xtortue+128
 911 LET y=ytortue+80
+912 LET xs=xtortue+153
+914 LET ys=119-ytortue
 915 PLOT x,y
 920 IF montretortue=0 THEN RETURN
-930 LET x1=taille*COS(angtortue*PI/180): LET y1=taille*SIN(angtortue*PI/180)
-932 PLOT x1+x,y1+y
-934 DRAW (-y1-x1),(x1-y1)
-936 DRAW 2*y1,-2*x1
-938 DRAW x1-y1,y1+x1
-940 PLOT x,y
+930 ; LET x1=taille*COS(angtortue*PI/180): LET y1=taille*SIN(angtortue*PI/180)
+932 ; PLOT x1+x,y1+y
+934 ; DRAW (-y1-x1),(x1-y1)
+936 ; DRAW 2*y1,-2*x1
+938 ; DRAW x1-y1,y1+x1
+940 ; PLOT x,y
 950 GOSUB 9900
 960 SPRITE BANK a
 962 SPRITE PRINT 1
 964 SPRITE BORDER 1
-966 SPRITE 0, x, y, 0, 1
+966 SPRITE 0, xs, ys, 0, 1
 970 RETURN 
 990 PAUSE 0:STOP
 9900 ; Sprite de la tortue

@@ -1,21 +1,34 @@
 100 ; initialisation
 101 ; --------------
+105 CLEAR : RESTORE
+107 CLS
 110 LET xtortue=20:LET ytortue=20
-115 LET angtortue=0
+115 LET angtortue=PI/2
 120 LET montretortue=1
-125 LET taille=5
-140 DIM l$(9,20):; lignes de l'editeur 
-145 LET c$="":; commande en cours
-150 LET a$="":; argument en cours
-160 LET np=1
+130 DIM l$(9,30):; lignes de l'editeur 
+135 LET c$="":; commande en cours
+140 LET a$="30":; argument en cours
+150 LET c=0:; curseur
+160 LET np=1:; nombre de primitives
 165 DIM p$(np,2):; liste des primitives
+170 DIM a(np):; adresse des primitives
+180 FOR i=1 TO np
+185 READ p$(i),a(i)
+190 NEXT i
 200 ; axe des x
 210 PLOT 0,80:DRAW 255,0
 220 DRAW -3,3:DRAW 0,-6:DRAW 3,3
 230 ; axe des y
 240 PLOT 128,0:DRAW 0,175
 250 DRAW -3,-3:DRAW 6,0:DRAW -3,3
-260 GOSUB 900:GOTO 990
+260 ; initialisation de la tortue
+262 SPRITE CLEAR
+265 BANK NEW b:; bank du sprite
+270 LOAD "tortue.spr" BANK b,0,256
+275 SPRITE BANK b
+277 SPRITE PRINT 1
+280 SPRITE BORDER 1
+290 GOSUB 900:GOTO 990
 900 ; affiche la tortue
 901 ; -----------------
 910 LET x=xtortue+128
@@ -23,21 +36,25 @@
 912 LET xs=xtortue+153
 914 LET ys=119-ytortue
 915 PLOT x,y
-920 IF montretortue=0 THEN RETURN
-930 ; LET x1=taille*COS(angtortue*PI/180): LET y1=taille*SIN(angtortue*PI/180)
-932 ; PLOT x1+x,y1+y
-934 ; DRAW (-y1-x1),(x1-y1)
-936 ; DRAW 2*y1,-2*x1
-938 ; DRAW x1-y1,y1+x1
-940 ; PLOT x,y
-950 GOSUB 9900
-960 SPRITE BANK a
-962 SPRITE PRINT 1
-964 SPRITE BORDER 1
-966 SPRITE 0, xs, ys, 0, 1
-970 RETURN 
-990 PAUSE 0:STOP
+920 IF montretortue=0 THEN SPRITE 0,xs,ys,0,0: RETURN
+925 SPRITE 0, xs, ys, 0, 1
+930 RETURN 
+990 GOSUB 1000: PAUSE 0:STOP
+1000 ; Les primitives
+1002 ; de graphisme
+1004 ; --------------
+1006 DATA "AV",1006
+1010 LET a=VAL(a$)
+1020 FOR i=0 TO a
+1025 LET xtortue=xtortue+cos(angtortue)
+1030 LET ytortue=ytortue+sin(angtortue)
+1035 PAUSE 1
+1040 GOSUB 900
+1050 NEXT i
+1065 GOSUB 900
+1095 RETURN
 9900 ; Sprite de la tortue
+9901 ; -------------------
 9902 SPRITE CLEAR : RESTORE 9910
 9904 BANK NEW a
 9906 FOR i=0 TO 255

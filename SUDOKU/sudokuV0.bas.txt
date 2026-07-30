@@ -1,0 +1,124 @@
+1 RUN AT 3
+100 ; INITIALISATION VARIABLES
+101 ; ________________________
+110 CLEAR
+120 DIM s(9,9)
+122 DIM t(9)
+124 DIM u(81,3)
+126 DIM v(9,9)
+200 GOSUB 1000
+210 GOSUB 2000
+220 GOSUB 1200
+230 PAUSE 0 : STOP
+1000 ; AFFICHAGE DE LA GRILLE
+1001 ; ______________________
+1010 PLOT 4,172:DRAW 144,0
+1011 PLOT 4,171:DRAW 144,0
+1012 PLOT 4,172:DRAW 0,-144
+1013 PLOT 5,172:DRAW 0,-144
+1015 PLOT 4,29:DRAW 144,0
+1020 FOR i=1 TO 9
+1024 PLOT 20+16*(i-1),172:DRAW 0,-144
+1026 PLOT 4,28+16*(i-1):DRAW 144,0
+1030 ; FOR j=1 TO 9
+1040 ; IF s(i,j)>0 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;s(i,j)
+1050 ; NEXT j
+1060 NEXT i
+1070 PLOT 53,172:DRAW 0,-144
+1072 PLOT 101,172:DRAW 0,-144
+1074 PLOT 4,77:DRAW 144,0
+1076 PLOT 4,125:DRAW 144,0
+1080 RETURN
+1100 ; REMPLISSAGE
+1101 ; ___________
+1110 RUN AT 0
+1115 LET i=1:LET j=1
+1120 PRINT AT 2*(i-1)+1,2*(j-1)+1;FLASH 1;s(i,j)
+1130 LET k$=INKEY$
+1140 IF k$="O" OR k$="o" AND j>1 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;FLASH 0;s(i,j): LET j=j-1
+1142 IF k$="P" OR k$="p" AND j<9 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;FLASH 0;s(i,j): LET j=j+1
+1144 IF k$="Q" OR k$="q" AND i>1 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;FLASH 0;s(i,j): LET i=i-1
+1146 IF k$="A" OR k$="a" AND i<9 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;FLASH 0;s(i,j): LET i=i+1
+1150 IF k$>="1" AND k$<="9" THEN GOSUB 1180: RUN AT 0
+1160 IF k$="X" OR k$="x" THEN RUN AT 3: RETURN
+1170 GOTO 1120
+1180 RUN AT 3
+1182 LET test=s(i,j): LET s(i,j)=VAL(k$)
+1184 PROC ligne(i) TO affiche
+1185 IF affiche=1 THEN LET s(i,j)=test: RETURN
+1186 PROC colonne(j) TO affiche
+1187 IF affiche=1 THEN LET s(i,j)=test: RETURN
+1188 PROC case(i,j) TO affiche
+1189 IF affiche=1 THEN LET s(i,j)=test: RETURN
+1190 RETURN
+1200 ; RESOLUTION
+1201 ; __________
+1210 ; RUN AT 3
+1215 LET c=1
+1220 FOR i=1 TO 9: FOR j=1 TO 9
+1230 IF s(i,j)=0 THEN LET u(c,1)=i:LET u(c,2)=j:LET c=c+1
+1240 NEXT j:NEXT i: LET max=c
+1245 LET c=1:LET u(c,3)=1
+1250 LET s(u(c,1),u(c,2))=u(c,3)
+1255 PRINT AT 2*(u(c,1)-1)+1,2*(u(c,2)-1)+1;INK 2;s(u(c,1),u(c,2))
+1260 PROC ligne(u(c,1)) TO test
+1265 IF test=1 THEN GOTO 1300
+1270 PROC colonne(u(c,2)) TO test
+1275 IF test=1 THEN GOTO 1300
+1280 PROC case(u(c,1),u(c,2)) TO test
+1285 IF test=1 THEN GOTO 1300
+1290 LET c=c+1:LET u(c,3)=1: GOTO 1250
+1300 LET u(c,3)=u(c,3)+1
+1310 IF u(c,3)>9 THEN GOTO 1350
+1320 GOTO 1250
+1350 LET c=c-1
+1352 LET u(c,3)=u(c,3)+1
+1353 IF u(c,3)>9 THEN GOTO 1350
+1354 FOR i = c+1 TO max: LET s(u(i,1),u(i,2))=0:PRINT AT 2*(u(i,1)-1)+1,2*(u(i,2)-1)+1;" ":NEXT i
+1356 GOTO 1250
+1400 RETURN
+2000 ; Grille test
+2001 ; ___________
+2010 RESTORE
+2020 FOR i=1 TO 9: FOR j=1 TO 9
+2030 READ a: LET s(i,j)=a
+2040 IF s(i,j)>0 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;s(i,j)
+2050 NEXT j:NEXT i
+2060 RETURN
+2100 DATA 5,3,0,0,7,0,0,0,0
+2101 DATA 6,0,0,1,9,5,0,0,0
+2102 DATA 0,9,8,0,0,0,0,6,0
+2103 DATA 8,0,0,0,6,0,0,0,3
+2104 DATA 4,0,0,8,0,3,0,0,1
+2105 DATA 7,0,0,0,2,0,0,0,6
+2106 DATA 0,6,0,0,0,0,2,8,0
+2107 DATA 0,0,0,4,1,9,0,0,5
+2108 DATA 0,0,0,0,8,0,0,7,9
+9010 DEFPROC ligne(n)
+9011    LET resultat = 0
+9012    LOCAL k,l
+9012    FOR k=1 TO 8: FOR l=k+1 TO 9
+9013    IF s(n,k)>0 AND s(n,k)=s(n,l) THEN LET resultat =1:GOTO 9015 
+9014    NEXT l:NEXT k
+9015 ENDPROC =resultat
+9020 DEFPROC colonne(n)
+9021    LET resultat = 0
+9022    LOCAL k,l
+9023    FOR k=1 TO 8:FOR l=k+1 TO 9
+9024    IF s(k,n)>0 AND s(k,n)=s(l,n) THEN LET resultat=1:GOTO 9026
+9025    NEXT l:NEXT k
+9026 ENDPROC =resultat
+9030 DEFPROC case(n,m)
+9031    LET resultat=0
+9032    LET n1=INT((n-1)/3)*3+1
+9033    LET m1=INT((m-1)/3)*3+1
+9034    LET t(1)=s(n1,m1):LET t(2)=s(n1+1,m1):LET t(3)=s(n1+2,m1)
+9035    LET t(4)=s(n1,m1+1):LET t(5)=s(n1+1,m1+1):LET t(6)=s(n1+2,m1+1)
+9036    LET t(7)=s(n1,m1+2):LET t(8)=s(n1+1,m1+2):LET t(9)=s(n1+2,m1+2)
+9037    LOCAL k,l
+9038    FOR k=1 TO 8:FOR l=k+1 TO 9
+9039    IF t(k)>0 AND t(k)=t(l) THEN LET resultat =1: GOTO 9050
+9040    NEXT l:NEXT k
+9050 ENDPROC =resultat
+9999 PAUSE 0
+

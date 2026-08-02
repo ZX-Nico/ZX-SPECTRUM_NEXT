@@ -12,15 +12,16 @@
 40 GOSUB 8000
 50 GOSUB 2000
 55 LET debut = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
-60 PROC resolve() TO resultat
-65 IF resultat = 0 THEN PRINT AT 19,2; FLASH 1; INK 4;"Pas de solution !":PAUSE 0 : GOTO 9999
-70 LET fin = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
+60 PROC cherche(1)
+70 ;PROC resolve() TO resultat
+75 ;IF resultat = 0 THEN PRINT AT 19,2; FLASH 1; INK 4;"Pas de solution !":PAUSE 0 : GOTO 9999
+80 LET fin = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
 90 PRINT AT 19,0;FLASH 1; INK 3;"Sudoku resolu en ";INT((fin-debut)/50);" sec."
 999 PAUSE 0 : GOTO 9999
 1000 ; Initialisation
 1001 ; ----------------------
 1010 DIM s(9,9):; Grille
-1012 DIM x(8):DIM y(8)
+1012 DIM t(18,2):; Testeur
 1020 BORDER 7:PAPER 7:INK 0
 1030 CLS
 1999 RETURN
@@ -84,16 +85,23 @@
 7290 ENDPROC = 0
 7300 ; Remplissage rapide
 7301 ; ----------------------
-7310 DEFPROC remplit(ligne,colonne)
-7315    LOCAL i,j,k,m,o,num,x,y,resultat,trouve
-7320    IF s(ligne,colonne)=0 THEN ENDPROC =0
-7325    LET num=s(ligne,colonne)
-7330    LET trouve=0
-7335    LET k = INT(ligne/3)+1
-7340    LET m = INT(colonne/3)+1
-7345    FOR i=1 TO 3
-7350    FOR j=1 TO 3
-7355    IF j<>m AND i=k THEN FOR o=1 TO 3: 
+7310 DEFPROC cherche(num)
+7315    LOCAL i,j,k,l
+7320    LET l=1
+7325    FOR i=1 TO 7 STEP 3
+7330    FOR j=1 TO 7 STEP 3
+7335    FOR k=i TO i+2
+7340    FOR m=j TO j+2
+7345    IF s(k,m)=num THEN LET t(l,1) = i: LET t(l,2)= j: LET t(l+9,1)=k: LET t(l+9,2)=m:LET l=l+1
+7350    NEXT m:NEXT k: NEXT j:NEXT i
+7355    FOR i=l+1 TO 9: LET t(i,1)=0
+7360    FOR i=1 TO 9
+7365    PRINT AT i,19;t(i,1);t(i,2);t(i+9,1);t(i+9,2)
+7370    NEXT i
+7380 ENDPROC
+7410 DEFPROC remplit(i,j,num)
+7415    PRINT AT i,19;i;j
+7420 ENDPROC
 8000 ; Grilles tests
 8001 ; ----------------------
 8010 RESTORE 9101:; A tester

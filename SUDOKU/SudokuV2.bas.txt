@@ -1,0 +1,134 @@
+1 ; Sudoku
+2 ; Programme par N.Prego
+3 ; V1.1
+4 ; Ecrit le 1er aout 2026
+5 ; Corrige le ...
+6 ; -------------------------
+10 ; Programme principal
+11 ; -------------------------
+15 RUN AT 3
+20 CLEAR : RESTORE
+30 GOSUB 1000
+40 GOSUB 8000
+50 GOSUB 2000
+55 LET debut = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
+60 PROC resolve() TO resultat
+65 IF resultat = 0 THEN PRINT AT 19,2; FLASH 1; INK 4;"Pas de solution !":PAUSE 0 : GOTO 9999
+70 LET fin = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
+90 PRINT AT 19,0;FLASH 1; INK 3;"Sudoku resolu en ";INT((fin-debut)/50);" sec."
+999 PAUSE 0 : GOTO 9999
+1000 ; Initialisation
+1001 ; ----------------------
+1010 DIM s(9,9):; Grille
+1012 DIM x(8):DIM y(8)
+1020 BORDER 7:PAPER 7:INK 0
+1030 CLS
+1999 RETURN
+2000 ; Affichage de la grille
+2001 ; ----------------------
+2010 PLOT 4,172:DRAW 144,0
+2020 PLOT 4,171:DRAW 144,0
+2030 PLOT 4,172:DRAW 0,-144
+2040 PLOT 5,172:DRAW 0,-144
+2050 PLOT 4,29:DRAW 144,0
+2060 FOR i=1 TO 9
+2070 PLOT 20+16*(i-1),172:DRAW 0,-144
+2080 PLOT 4,28+16*(i-1):DRAW 144,0
+2090 FOR j=1 TO 9
+2100 IF s(i,j)>0 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;s(i,j)
+2110 NEXT j
+2120 NEXT i
+2130 PLOT 53,172:DRAW 0,-144
+2140 PLOT 101,172:DRAW 0,-144
+2150 PLOT 4,77:DRAW 144,0
+2160 PLOT 4,125:DRAW 144,0
+2170 RETURN
+7000 ; Procedures
+7001 ; ----------------------
+7100 ; Check si n se trouve
+7101 ; une ligne, une colonne
+7102 ; ou dans une case 3x3
+7103 ; ----------------------
+7110 DEFPROC test(ligne, colonne, n)
+7110    LOCAL i, j, k, m
+7120    FOR i = 1 TO 9
+7125    IF s(ligne, i) = n THEN ENDPROC = 0
+7130    NEXT i
+7135    FOR i = 1 TO 9
+7140    IF s(i, colonne) = n THEN ENDPROC = 0
+7145    NEXT i
+7150    LET k = INT((ligne - 1) / 3) * 3 + 1
+7155    LET m = INT((colonne - 1) / 3) * 3 + 1
+7160    FOR i = k TO k + 2
+7165    FOR j = m TO m + 2
+7170    IF s(i, j) = n THEN ENDPROC = 0
+7175    NEXT j
+7180    NEXT i
+7190    ENDPROC = 1
+7200 ; Test case vide
+7201 ; -------------------
+7210 DEFPROC resolve()
+7215    LOCAL i,j,ligne, colonne, resultat, trouve
+7220    ; Cherche si une case est vide
+7222    LET trouve=0
+7225    FOR i = 1 TO 9
+7230    FOR j = 1 TO 9
+7235    IF s(i, j) = 0 AND trouve=0 THEN LET ligne = i: LET colonne = j: LET trouve=1 
+7240    NEXT j: NEXT i
+7245    IF trouve = 0 THEN ENDPROC = 1
+7250    FOR i = 1 TO 9
+7255    PROC test(ligne,colonne,i) TO resultat
+7260    IF resultat = 1 THEN LET s(ligne, colonne) = i: PRINT AT 2*(ligne-1)+1,2*(colonne-1)+1;INK 2;s(ligne,colonne): PROC resolve() TO solution: IF solution = 1 THEN ENDPROC =1
+7265    IF resultat = 1 THEN LET s(ligne,colonne)=0: PRINT AT 2*(ligne-1)+1,2*(colonne-1)+1;INK 2;"X"
+7280    NEXT i
+7290 ENDPROC = 0
+7300 ; Remplissage rapide
+7301 ; ----------------------
+7310 DEFPROC remplit(ligne,colonne)
+7315    LOCAL i,j,k,m,o,num,x,y,resultat,trouve
+7320    IF s(ligne,colonne)=0 THEN ENDPROC =0
+7325    LET num=s(ligne,colonne)
+7330    LET trouve=0
+7335    LET k = INT(ligne/3)+1
+7340    LET m = INT(colonne/3)+1
+7345    FOR i=1 TO 3
+7350    FOR j=1 TO 3
+7355    IF j<>m AND i=k THEN FOR o=1 TO 3: 
+8000 ; Grilles tests
+8001 ; ----------------------
+8010 RESTORE 9101:; A tester
+8020 FOR i=1 TO 9: FOR j=1 TO 9
+8030 READ a: LET s(i,j)=a
+8040 IF s(i,j)>0 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;s(i,j)
+8050 NEXT j:NEXT i
+9060 RETURN
+9100 ; Moyenne - 39'10 
+9101 DATA 5,3,0,0,7,0,0,0,0
+9102 DATA 6,0,0,1,9,5,0,0,0
+9103 DATA 0,9,8,0,0,0,0,6,0
+9104 DATA 8,0,0,0,6,0,0,0,3
+9105 DATA 4,0,0,8,0,3,0,0,1
+9106 DATA 7,0,0,0,2,0,0,0,6
+9107 DATA 0,6,0,0,0,0,2,8,0
+9108 DATA 0,0,0,4,1,9,0,0,5
+9109 DATA 0,0,0,0,8,0,0,7,9
+9110 ; Facile - 0'13
+9111 DATA 0,3,0,2,7,4,5,0,9
+9112 DATA 0,0,2,0,0,9,0,0,8
+9113 DATA 0,7,6,0,0,3,1,2,4
+9114 DATA 3,1,5,0,9,6,2,8,7
+9115 DATA 7,4,8,0,1,0,9,3,6
+9116 DATA 6,2,9,7,3,0,4,5,1
+9117 DATA 1,8,3,6,0,0,7,9,0
+9118 DATA 2,0,0,3,0,0,6,0,0
+9119 DATA 5,0,4,9,2,7,0,1,0
+9120 ; Difficile
+9121 DATA 0,0,0,4,3,0,0,1,0
+9122 DATA 0,0,0,0,1,0,0,2,0
+9123 DATA 0,0,4,0,0,2,5,0,8
+9124 DATA 7,0,0,0,0,0,6,3,0
+9125 DATA 0,0,3,0,2,0,8,0,0
+9126 DATA 0,8,5,0,0,0,0,0,7
+9127 DATA 9,0,2,8,0,0,1,0,0
+9128 DATA 0,7,0,0,4,0,0,0,0
+9129 DATA 0,4,0,0,6,1,0,0,0

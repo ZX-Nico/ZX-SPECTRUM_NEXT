@@ -12,16 +12,22 @@
 40 GOSUB 8000
 50 GOSUB 2000
 55 LET debut = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
-60 PROC cherche(1)
-70 ;PROC resolve() TO resultat
-75 ;IF resultat = 0 THEN PRINT AT 19,2; FLASH 1; INK 4;"Pas de solution !":PAUSE 0 : GOTO 9999
-80 LET fin = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
-90 PRINT AT 19,0;FLASH 1; INK 3;"Sudoku resolu en ";INT((fin-debut)/50);" sec."
+57 LET rec=0
+60 FOR i=1 TO 9
+65 PROC remplit(i) TO remp
+70 LET rec=rec+remp
+75 NEXT i
+80 IF rec>0 THEN GOTO 57
+90 PROC resolve() TO resultat
+95 IF resultat = 0 THEN PRINT AT 19,2; FLASH 1; INK 4;"Pas de solution !":PAUSE 0 : GOTO 9999
+100 LET fin = PEEK(23672)+256*PEEK(23673)+65536*PEEK(23674)
+110 PRINT AT 19,0;FLASH 1; INK 3;"Sudoku resolu en ";INT((fin-debut)/50);" sec."
 999 PAUSE 0 : GOTO 9999
 1000 ; Initialisation
 1001 ; ----------------------
 1010 DIM s(9,9):; Grille
 1012 DIM t(18,2):; Testeur
+1014 DIM u(9,9):; Testeur 2
 1020 BORDER 7:PAPER 7:INK 0
 1030 CLS
 1999 RETURN
@@ -86,7 +92,7 @@
 7300 ; Remplissage rapide
 7301 ; ----------------------
 7310 DEFPROC cherche(num)
-7315    LOCAL i,j,k,l
+7315    LOCAL i,j,k,m,l
 7320    LET l=1
 7325    FOR i=1 TO 7 STEP 3
 7330    FOR j=1 TO 7 STEP 3
@@ -99,18 +105,31 @@
 7365    PRINT AT i,19;t(i,1);t(i,2);t(i+9,1);t(i+9,2)
 7370    NEXT i
 7380 ENDPROC
-7410 DEFPROC remplit(i,j,num)
-7415    PRINT AT i,19;i;j
-7420 ENDPROC
+7410 DEFPROC remplit(num)
+7415    LOCAL i,j,k,m,x,y,trouve,resultat
+7417    LET message =0
+7420    FOR i=1 TO 7 STEP 3
+7425    FOR j=1 TO 7 STEP 3
+7430    LET trouve=0
+7435    FOR k=i TO i+2
+7440    FOR m=j TO j+2
+7445    LET u(k,m)=s(k,m)
+7450    IF s(k,m)=0 THEN PROC test(k,m,num) TO resultat: LET trouve=trouve+resultat: IF resultat = 1 THEN LET x=k:LET y=m
+7455    NEXT m: NEXT k
+7460    IF trouve=1 THEN s(x,y)=num:PRINT AT 2*(x-1)+1,2*(y-1)+1;INK 3;s(x,y): ENDPROC = 1
+7470    FOR k=i TO i+2:FOR m=j TO j+2
+7475    LET s(k,m)=u(k,m)
+7480    NEXT j:NEXT i
+7495 ENDPROC = 0
 8000 ; Grilles tests
 8001 ; ----------------------
-8010 RESTORE 9101:; A tester
+8010 RESTORE 9121:; A tester
 8020 FOR i=1 TO 9: FOR j=1 TO 9
 8030 READ a: LET s(i,j)=a
 8040 IF s(i,j)>0 THEN PRINT AT 2*(i-1)+1,2*(j-1)+1;s(i,j)
 8050 NEXT j:NEXT i
 9060 RETURN
-9100 ; Moyenne - 39'10 
+9100 ; Moyenne - 39'10 - 1'02
 9101 DATA 5,3,0,0,7,0,0,0,0
 9102 DATA 6,0,0,1,9,5,0,0,0
 9103 DATA 0,9,8,0,0,0,0,6,0
@@ -120,7 +139,7 @@
 9107 DATA 0,6,0,0,0,0,2,8,0
 9108 DATA 0,0,0,4,1,9,0,0,5
 9109 DATA 0,0,0,0,8,0,0,7,9
-9110 ; Facile - 0'13
+9110 ; Facile - 0'13 - 0'15
 9111 DATA 0,3,0,2,7,4,5,0,9
 9112 DATA 0,0,2,0,0,9,0,0,8
 9113 DATA 0,7,6,0,0,3,1,2,4

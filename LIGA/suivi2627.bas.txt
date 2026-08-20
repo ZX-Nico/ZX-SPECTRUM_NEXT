@@ -1,0 +1,25 @@
+5 CLEAR
+10 DIM N$(20)
+20 DIM D(20,10)
+100 GOSUB 8000
+1000 RESTORE 9000
+1010 READ A
+1020 IF A=255 THEN STOP
+1030 PRINT 
+8000 ; Equipes
+8010 RESTORE 8060
+8020 FOR i=1 TO 20
+8030 READ N$(i)
+8040 NEXT i
+8050 RETURN
+8060 DATA "Alaves", "Athletic","Atlético","Barcelona","Betis"
+8070 DATA "Celta","Deportivo","Elche","Espanyol","Getafe"
+8080 DATA "Levante","Malaga","Osasuna","Racing","Rayo"
+8090 DATA "Real Madrid","Real Sociedad","Sevilla","Valencia","Villareal"
+9000 ; Résultats
+9001 DATA 1
+9002 DATA 1,3,0,10
+9003 DATA 18,2,1,15
+9004 DATA 14,2,2,20
+9005 DATA 9,3,0,11
+9010 DATA 255

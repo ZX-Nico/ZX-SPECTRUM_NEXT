@@ -1,1 +1,1 @@
-1 ; Gravite 
+1 PRINT "Bonjour" 

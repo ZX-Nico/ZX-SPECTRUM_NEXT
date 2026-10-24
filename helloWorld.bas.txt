@@ -1,0 +1,33 @@
+1 ; Hello World !
+2 ; Programme par N.Prego
+3 ; V1.1
+4 ; Ecrit le 21 octobre 2026
+5 ; Corrige le ...
+6 ; -------------------------
+10 ; Programme principal
+11 ; -------------------------
+20 RUN AT 3
+30 LAYER 2,1: CLS : ; Layer 2, 256 couleurs
+40 LET %n=0
+45 ;
+50 REPEAT
+60      PROC message(%n)
+70      LET %n=%n+1
+80 REPEAT UNTIL %n=16
+85 ;
+90 PROC centre("Appuie sur une touche",22,0)
+100 PAUSE 0
+110 LAYER 0: CLS :  ; retour a l'ecran standard
+120 STOP
+1000 ; Procedure message
+1001 ; -----------------------
+1010 DEFPROC message(c)
+1020    LOCAL y
+1030    LET y=c+3
+1040    PROC centre("HELLO WORLD !",y,c*16+15)
+1050 ENDPROC
+2000 ; Procedure centre
+2001 ; -----------------------
+2010 DEFPROC centre(m$,y,c)
+2010    PRINT AT y,(32-LEN m$)/2;INK c;m$
+2020 ENDPROC
